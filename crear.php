@@ -5,7 +5,7 @@
     if($_POST["operacion"] == "Crear"){
         $imagen = '';
         if($_FILES["imagen_usuario"]["name"] != ''){
-            $imagen sube_imagen();
+            $imagen = sube_imagen();
         }
         $stmt = $conexion->prepare("INSERT INTO usuarios (nombre,apellidos,imagen,telefono,email) VALUES(
                                     :nombre,:apellidos,:imagen,:telefono,:email)");

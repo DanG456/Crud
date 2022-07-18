@@ -15,7 +15,7 @@
     }
 
     #Para saber si se intento ordenar la tabla por medio de alguno de los criterios
-    if(isset($_POST["order"]["value"])){
+    if(isset($_POST["order"])){
         $query .= 'ORDER BY' . $_POST["order"]['0']['column'] .' '.
         $_POST["order"][0]['dir'] . ' '; #Equivale a añadir el where al valor previo de query para filtrar la consulta
         
@@ -37,7 +37,7 @@
     foreach($resultado as $fila){
         $imagen = '';
         if($fila["imagen"] != ''){
-            $imagen = '<img src="img/>' . $fila["imagen"] . '"class="img-thumbnail" width="50" height="50"';
+            $imagen = '<img src="img/' . $fila["imagen"] . '" class="img-thumbnail" width="50" height="50">';
         }else{
             $imagen = '';
         }
@@ -69,5 +69,5 @@
         "data" => $datos
     );
 
-    echo json_encode($salida)
+    echo json_encode($salida);
 ?>

@@ -135,7 +135,7 @@
 
       //Codigo para crear un registro
       $(document).on('submit','#formulario', function(event){
-        event.preventDefault();//Para evitar que se envie 
+        event.preventDefault();//Para evitar que se envie al precionar un boton
         var nombres = $("#nombre").val();
         var apellidos = $("#apellidos").val();
         var telefono = $("#telefono").val();
@@ -143,7 +143,7 @@
         var extension = $("#imagen_usuario").val().split('.').pop().toLowerCase();
         
         if(extension != ''){
-          if(jquery.inArray(extension, ['gif','png','jpg','jpeg']) == -1){
+          if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1){
             alert("Formato de imagen inválido");
             $("#imagen_usuario").val('');
             return false;
