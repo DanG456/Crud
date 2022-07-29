@@ -131,43 +131,72 @@
             },
           ]
         });
+
+        //Codigo para crear un registro
+        $(document).on('submit','#formulario', function(event){
+          event.preventDefault();//Para evitar que se envie al precionar un boton
+          var nombres = $("#nombre").val();
+          var apellidos = $("#apellidos").val();
+          var telefono = $("#telefono").val();
+          var email = $("#email").val();
+          var extension = $("#imagen_usuario").val().split('.').pop().toLowerCase();
+          
+          if(extension != ''){
+            if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1){
+              alert("Formato de imagen inválido");
+              $("#imagen_usuario").val('');
+              return false;
+            }
+          }
+
+          if(nombres != '' && apellidos != '' && email != ''){
+            $.ajax({
+              url: "crear.php",
+              method: "POST",
+              data:new FormData(this),
+              contentType: false,
+              processData: false,
+              succes:function(data){
+                alert(data);
+                $('#fomulario')[0].reset();
+                $('#userModal').modal.hide();//metodo hide para esconder el formulario
+                dataTable.ajax.reload();
+              }
+            });
+          }else{
+            alert("Algunos campos son obligatorios");
+          }
+        });
+
+        //Codigo para editar registro
+        $(document).on('click', '.editar',function(){
+          var id_usuario = $(this).attr("id");
+          $.ajax({
+            url: "obtener_registro.php",
+            method: "POST",
+            data: {id_usuario:id_usuario},
+            dataType:"json",
+            success: function(data){
+              $("#userModal").modal('show');
+              $("#nombre").val(data.nombre);
+              $("#apellidos").val(data.apellidos);
+              $("#telefono").val(data.telefono);
+              $("#email").val(data.email);
+              $(".modal-title").text("Editar Usuario");
+              $("#id_usuario").val(id_usuario);
+              $("#imagen_usuario").html(data.imagen_usuario);
+              $("#action").val("Editar");
+              $("#operacion").val("Editar");
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+            console.log(textStatus, errorThrown);
+            }
+          })
+        });
       });
 
-      //Codigo para crear un registro
-      $(document).on('submit','#formulario', function(event){
-        event.preventDefault();//Para evitar que se envie al precionar un boton
-        var nombres = $("#nombre").val();
-        var apellidos = $("#apellidos").val();
-        var telefono = $("#telefono").val();
-        var email = $("#email").val();
-        var extension = $("#imagen_usuario").val().split('.').pop().toLowerCase();
-        
-        if(extension != ''){
-          if(jQuery.inArray(extension, ['gif','png','jpg','jpeg']) == -1){
-            alert("Formato de imagen inválido");
-            $("#imagen_usuario").val('');
-            return false;
-          }
-        }
-        
-        if(nombres != '' && apellidos != '' && email != ''){
-          $.ajax({
-            url: "crear.php",
-            method: "POST",
-            data:new FormData(this),
-            contentType: false,
-            processData: false,
-            succes:function(data){
-              alert(data);
-              $('#fomulario')[0].reset();
-              $('#userModal').modal.hide();//metodo hide para esconder el formulario
-              dataTable.ajax.reload();
-            }
-          });
-        }else{
-          alert("Algunos campos son obligatorios");
-        }
-      });
+      
+      
     </script>
   </body>
 </html>
